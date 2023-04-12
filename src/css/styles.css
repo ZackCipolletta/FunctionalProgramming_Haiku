@@ -1,0 +1,16 @@
+body {
+  background-color: black;
+  color: white;
+  font-weight: bolder;
+  font-size: larger;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+}
+
+
+#userHaiku {
+  width: 500px;
+  resize: both; 
+  height: 100px;
+}
