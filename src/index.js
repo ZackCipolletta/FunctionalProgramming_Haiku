@@ -35,10 +35,27 @@ const numberOfLineBreaks = (haikuInput) => {
   }
   const y = (haikuInput.match(/\n/g) || []).length;
   console.log(y);
-  if(!y) {
+  if (!y) {
     return 1;
   }
   return y + 1;
+};
+
+const thisHasThat = (x, y) => {
+  if (x === y) {
+    return true;
+  } else {
+    return false;
+  }
+};
+
+const toSyllables = (x) => {
+  let arr = [];
+  for (let i = 0; i < x.length; i++) {
+    const totalSyllables = new_count(x[i]);
+    arr.push(totalSyllables);
+  }
+  return arr;
 };
 
 const lines = changeState("threeLines")('false');
@@ -69,40 +86,44 @@ window.addEventListener("load", function () {
   // This function has side effects because we are manipulating the DOM. Manipulating the DOM will always be a side effect. Note that we only use one of our functions to alter soil. You can easily add more.
 
   document.getElementById('checkButton').onclick = function () {
-    // let x = document.getElementById("userHaiku").value;
-    // const newState = stateControl(lines);
-    const currentState = stateControl();
-    // y.innerHTML = numberOfLineBreaks(x);
-    // stateArr.push(storeState()); 
-    let y = document.createElement("p");
-    y.innerHTML = `the Haiku has 3 lines: ${currentState.threeLines}`;
-    document.querySelector('body').append(y);
+    // const currentState = stateControl();
+    // let y = document.createElement("p");
+    // currentState.linesTrue;
+    // y.innerHTML = `the Haiku has 3 lines: ${currentState.threeLines}`;
+    // document.querySelector('body').append(y);
   };
 
   document.getElementById('countButton').onclick = function () {
     let x = document.getElementById("userHaiku").value;
     let y = document.createElement("p");
-    console.log(numberOfLineBreaks(x)); 
     if (numberOfLineBreaks(x) === 3) {
       const newState = stateControl(linesTrue);
-      console.log(newState);
     } else if (numberOfLineBreaks(x) !== 3) {
       const newState = stateControl(lines);
     }
-    console.log(x.split("\n"));
+    const currentState = stateControl();
     const z = x.split('\n');
-    if (new_count(z[0]) === 5) {
-      console.log("this has 5 syllables.")
-    }
-    if (new_count(z[1]) === 7) {
-      console.log("this has 7 syllables.")
-    }
-    if (new_count(z[2]) === 5) {
-      console.log("this has 5 syllables.")
-    }
-    y.innerHTML = numberOfLineBreaks(x);
-    // stateArr.push(storeState()); 
-    document.querySelector('body').append(y);
+    const lineSyll = toSyllables(z);
+    const key = [5, 7, 5];
+
+    const checkSyllableValue = (lineSyll, key) => {
+      if (thisHasThat(JSON.stringify(lineSyll), JSON.stringify(key)) === true) {
+        return true;
+      } else {
+        return false;
+      }
+    };
+
+    if (currentState.threeLines === 'true' && checkSyllableValue(lineSyll, key) === true) {
+      y.innerHTML = ("You have a Haiku.");
+      // y.innerHTML = numberOfLineBreaks(x);
+    } else {
+      y.innerHTML = ("You do not have a Haiku. Please try again.");
+    } document.querySelector('body').append(y);
   };
 
 });
+
+// this line has 5 words
+// however this line has more
+// back to five words here
